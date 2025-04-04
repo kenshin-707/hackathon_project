@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ecoactions.db'
 db = SQLAlchemy(app)
@@ -66,78 +66,7 @@ def leaderboard():
     users = User.query.order_by(User.points.desc()).all()
     return render_template('leaderboard.html', users=users)
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
-
-# HTML Templates
-# index.html
-index_html = """
-<!DOCTYPE html>
-<html>
-<head><title>EcoActions - Home</title></head>
-<body>
-    <h1>Welcome, {{ user.username }}!</h1>
-    <h2>Challenges:</h2>
-    <ul>
-        {% for challenge in challenges %}
-        <li>{{ challenge.name }} - {{ challenge.points }} points
-            <a href="{{ url_for('complete_challenge', challenge_id=challenge.id) }}">Complete</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('leaderboard') }}">View Leaderboard</a>
-</body>
-</html>
-"""
-
-# login.html
-login_html = """
-<!DOCTYPE html>
-<html>
-<head><title>Login</title></head>
-<body>
-    <h1>Login</h1>
-    <form method="POST">
-        Username: <input type="text" name="username" required><br>
-        Password: <input type="password" name="password" required><br>
-        <input type="submit" value="Login">
-    </form>
-    <a href="{{ url_for('signup') }}">Sign Up</a>
-</body>
-</html>
-"""
-
-# signup.html
-signup_html = """
-<!DOCTYPE html>
-<html>
-<head><title>Sign Up</title></head>
-<body>
-    <h1>Sign Up</h1>
-    <form method="POST">
-        Username: <input type="text" name="username" required><br>
-        Password: <input type="password" name="password" required><br>
-        <input type="submit" value="Sign Up">
-    </form>
-</body>
-</html>
-"""
-
-# leaderboard.html
-leaderboard_html = """
-<!DOCTYPE html>
-<html>
-<head><title>Leaderboard</title></head>
-<body>
-    <h1>Leaderboard</h1>
-    <ul>
-        {% for user in users %}
-        <li>{{ user.username }} - {{ user.points }} points</li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('home') }}">Back to Home</a>
-</body>
-</html>
-"""

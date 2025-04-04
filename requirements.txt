@@ -1,2 +1,2 @@
 Flask
-FlaskSQLAlchemy
+Flask-SQLAlchemy
